@@ -1,3 +1,4 @@
+import { sql } from "drizzle-orm";
 import { integer, numeric, pgEnum, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
 export const paymentStatusEnum = pgEnum("PaymentStatus", ["COMPLETED", "PENDING"]);
@@ -29,9 +30,9 @@ export const subscriptionTiers = pgTable("SubscriptionTier", {
   perks: text("perks").array().notNull(),
   description: text("description").notNull(),
   tier: integer("tier").notNull(),
-  duration: integer("duration").notNull(),
-  subscribers: integer("subscribers").notNull(),
-  monthlyRevenue: numeric("monthlyRevenue").notNull(),
+  duration: integer("duration"),
+  subscribers: integer("subscribers").default(0),
+  monthlyRevenue: numeric("monthlyRevenue").default(sql`0`),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().notNull(),
 });
