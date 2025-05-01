@@ -1,14 +1,16 @@
 import type { Response } from "express";
 import type { AuthRequest } from "../common/types/userAuthRequest";
-import { createSubscriptionTier } from "../common/queries/createSubscriptionTier";
 import { HTTP_STATUS } from "../common/utils/constants";
 import { HttpStatusMessages } from "../common/utils/constants";
 import type { SubscriptionTier } from "../common/types/subscriptionTier";
-import { getSubscriptionTiersByCreatorId } from "../common/queries/getSubscriptionTiers";
 import { SubscriptionTierCreationSchema } from "../common/schemas/subscriptionTier.create.schema";
 import { SubscriptionTierUpdateSchema } from "../common/schemas/subscriptionTier.update.schema";
-import { updateSubscriptionTier } from "../common/queries/updateSubscriptionTier";
-import { deleteSubscriptionTier } from "../common/queries/deleteSubscriptionTier";
+import {
+  createSubscriptionTierHandler,
+  deleteSubscriptionTierHandler,
+  getSubscriptionTiersHandler,
+  updateSubscriptionTierHandler,
+} from "../handlers/subscriptionTierHandler";
 
 const createSubscrioptionTierController = async (req: AuthRequest, res: Response): Promise<void> => {
   if (!req.userId) {
@@ -26,7 +28,7 @@ const createSubscrioptionTierController = async (req: AuthRequest, res: Response
   }
   try {
     const data: SubscriptionTier = req.body;
-    const subscriptionTier = await createSubscriptionTier(data);
+    const subscriptionTier = await createSubscriptionTierHandler(data);
     res.status(HTTP_STATUS.CREATED).json({
       message: "Subscription tier created successfully",
       data: subscriptionTier,
@@ -49,7 +51,7 @@ const getSubscriptionTierByCreatorIdController = async (req: AuthRequest, res: R
     return;
   }
   try {
-    const subscriptionTiers = await getSubscriptionTiersByCreatorId(req.userId);
+    const subscriptionTiers = await getSubscriptionTiersHandler(req.userId);
     res.status(HTTP_STATUS.OK).json({
       message: HttpStatusMessages.OK,
       subscriptionTiers: subscriptionTiers,
@@ -79,7 +81,7 @@ const updateSubscriptionTierController = async (req: AuthRequest, res: Response)
     return;
   }
   try {
-    const subscriptionTier = await updateSubscriptionTier(req.body);
+    const subscriptionTier = await updateSubscriptionTierHandler(req.body);
     res.status(HTTP_STATUS.OK).json({
       message: "Subscription tier updated successfully",
       data: subscriptionTier,
@@ -102,7 +104,7 @@ const deleteSubscriptionTierController = async (req: AuthRequest, res: Response)
     return;
   }
   try {
-    const response = await deleteSubscriptionTier(req.body);
+    const response = await deleteSubscriptionTierHandler(req.body);
     res.status(HTTP_STATUS.OK).json({
       message: "Subscription tier deleted successfully",
       response: response,

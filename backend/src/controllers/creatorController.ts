@@ -1,8 +1,8 @@
 import type { AuthRequest } from "../common/types/userAuthRequest";
 import type { Response } from "express";
 import { HTTP_STATUS } from "../common/utils/constants";
-import { getCreatorDetails } from "../common/queries/getCreatorDetails";
 import { HttpStatusMessages } from "../common/utils/constants";
+import { getCreatorDetailsHandler } from "../handlers/creatorHandler";
 
 const creatorDetails = async (req: AuthRequest, res: Response): Promise<void> => {
   if (!req.userId) {
@@ -11,7 +11,7 @@ const creatorDetails = async (req: AuthRequest, res: Response): Promise<void> =>
     });
     return;
   }
-  const details = await getCreatorDetails(req.userId);
+  const details = await getCreatorDetailsHandler(req.userId);
   res.status(HTTP_STATUS.OK).json({
     message: HttpStatusMessages.OK,
     creatorDetails: details,

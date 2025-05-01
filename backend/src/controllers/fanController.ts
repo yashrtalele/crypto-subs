@@ -1,8 +1,8 @@
 import type { AuthRequest } from "../common/types/userAuthRequest";
 import type { Response } from "express";
 import { HTTP_STATUS } from "../common/utils/constants";
-import { getFanDetails } from "../common/queries/getFanDetails";
 import { HttpStatusMessages } from "../common/utils/constants";
+import { getFanDetailsHandler } from "../handlers/fanHandler";
 
 const fanDetails = async (req: AuthRequest, res: Response): Promise<void> => {
   if (!req.userId) {
@@ -11,7 +11,7 @@ const fanDetails = async (req: AuthRequest, res: Response): Promise<void> => {
     });
     return;
   }
-  const details = await getFanDetails(req.userId);
+  const details = await getFanDetailsHandler(req.userId);
   res.status(HTTP_STATUS.OK).json({
     message: HttpStatusMessages.OK,
     creatorDetails: details,

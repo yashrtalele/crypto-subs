@@ -1,15 +1,7 @@
 import { eq } from "drizzle-orm";
 import { db } from "../../db/drizzleSingleton";
 import { subscriptionTiers } from "../../db/schema";
-
-interface UpdateSubscriptionTier {
-  id: string;
-  perks?: string[];
-  description?: string;
-  price?: number;
-  duration?: number;
-  tier?: number;
-}
+import { UpdateSubscriptionTier } from "../types/subscriptionTier";
 
 export const updateSubscriptionTier = async (data: UpdateSubscriptionTier) => {
   try {
