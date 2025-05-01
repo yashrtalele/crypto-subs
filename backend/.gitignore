@@ -36,9 +36,3 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
 # Visual Studio Code
 .vscode
-
-# bun
-bun.lock
-yarn.lock
-yarn-error.log
-src/generated/
